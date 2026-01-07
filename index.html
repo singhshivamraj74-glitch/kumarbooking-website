@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kumar Booking</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial, sans-serif;
+ background:#f2f5f9;
+ color:#222;
+}
+header{
+ background:#0a2540;
+ color:#fff;
+ padding:15px 20px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+header h2{margin:0}
+button{cursor:pointer}
+
+.section{
+ background:#fff;
+ margin:20px;
+ padding:20px;
+ border-radius:12px;
+ box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+.cards{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+ gap:15px;
+}
+.card{
+ background:#f9fafc;
+ padding:15px;
+ border-radius:10px;
+ text-align:center;
+}
+.card span{font-size:36px}
+.card button{
+ margin-top:10px;
+ padding:10px;
+ width:100%;
+ border:none;
+ border-radius:6px;
+ background:#0a2540;
+ color:#fff;
+}
+
+/* FOOTER NAV */
+.footer-nav{
+ display:flex;
+ flex-wrap:wrap;
+ gap:10px;
+ justify-content:center;
+ margin-top:10px;
+}
+.footer-nav button{
+ background:#fff;
+ color:#0a2540;
+ border:1px solid #0a2540;
+ padding:6px 10px;
+ border-radius:6px;
+}
+
+/* MODAL */
+#overlay{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.6);
+ z-index:999;
+}
+.modal{
+ background:#fff;
+ width:330px;
+ padding:20px;
+ border-radius:10px;
+ position:absolute;
+ top:50%;
+ left:50%;
+ transform:translate(-50%,-50%);
+}
+.modal h3{margin-top:0}
+.modal input,.modal button{
+ width:100%;
+ padding:10px;
+ margin-top:10px;
+}
+.modal button{
+ background:#0a2540;
+ color:#fff;
+ border:none;
+ border-radius:6px;
+}
+.close{
+ text-align:right;
+ font-size:18px;
+ cursor:pointer;
+}
+.link{
+ text-align:center;
+ margin-top:10px;
+ color:#0a2540;
+ cursor:pointer;
+}
+
+footer{
+ background:#0a2540;
+ color:#fff;
+ text-align:center;
+ padding:15px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>Kumar Booking</h2>
+</header>
+
+<!-- SERVICES -->
+<div class="section">
+<h3>🚀 Book Your Service</h3>
+<div class="cards">
+ <div class="card"><span>🚌</span><h4>Bus</h4><button onclick="start('bus')">Book Now</button></div>
+ <div class="card"><span>🚆</span><h4>Train</h4><button onclick="start('train')">Book Now</button></div>
+ <div class="card"><span>✈️</span><h4>Flight</h4><button onclick="start('flight')">Book Now</button></div>
+ <div class="card"><span>🏨</span><h4>Hotel</h4><button onclick="start('hotel')">Book Now</button></div>
+</div>
+</div>
+
+<!-- NEWS -->
+<div class="section">
+<h3>📰 Travel News</h3>
+<ul>
+ <li>High demand for summer travel tickets</li>
+ <li>New bus routes added in major cities</li>
+ <li>Hotel bookings increased this season</li>
+</ul>
+</div>
+
+<!-- INFO -->
+<div class="section">
+<h3>ℹ️ Information</h3>
+<p>📍 Location based services supported</p>
+<p>🌦 Weather updates available</p>
+<p>🔐 Login required only for booking</p>
+</div>
+
+<!-- ABOUT / HELP / TERMS / PRIVACY -->
+<div class="section">
+<h3>About Kumar Booking</h3>
+<p>
+Kumar Booking is a travel assistance website.  
+We help users find bus, train, flight and hotel booking services easily.
+</p>
+
+<h3>Help & Support</h3>
+<p>
+If you face any issue, contact us anytime.  
+Email: <b>support@kumarbooking.com</b>  
+Working Hours: 9 AM – 9 PM
+</p>
+
+<h3>Terms & Conditions</h3>
+<p>
+Kumar Booking does not provide direct ticket booking or payment.  
+All bookings are completed on official third-party websites.
+</p>
+
+<h3>Privacy Policy</h3>
+<p>
+We respect user privacy.  
+We do not store passwords or payment details.  
+Location is used only to improve experience.
+</p>
+</div>
+
+<footer>
+© 2026 Kumar Booking
+<div class="footer-nav">
+ <button onclick="scrollToTop()">Home</button>
+ <button onclick="openLogin()">Login</button>
+</div>
+</footer>
+
+<!-- LOGIN / CREATE ACCOUNT -->
+<div id="overlay">
+ <div class="modal" id="loginBox">
+  <div class="close" onclick="closeModal()">✖</div>
+  <h3>Login</h3>
+  <input placeholder="Email">
+  <input type="password" placeholder="Password">
+  <button onclick="doLogin()">Login</button>
+  <div class="link" onclick="showCreate()">Create Account</div>
+ </div>
+
+ <div class="modal" id="createBox" style="display:none">
+  <div class="close" onclick="closeModal()">✖</div>
+  <h3>Create Account</h3>
+  <input placeholder="Name">
+  <input placeholder="Email">
+  <input type="password" placeholder="Password">
+  <button onclick="doLogin()">Create & Login</button>
+  <div class="link" onclick="showLogin()">Back to Login</div>
+ </div>
+</div>
+
+<script>
+let loggedIn=false;
+let service="";
+
+function start(s){
+ service=s;
+ if(!loggedIn){
+  openLogin();
+ }else{
+  redirect();
+ }
+}
+
+function openLogin(){
+ document.getElementById("overlay").style.display="block";
+ showLogin();
+}
+function closeModal(){
+ document.getElementById("overlay").style.display="none";
+}
+
+function showCreate(){
+ loginBox.style.display="none";
+ createBox.style.display="block";
+}
+function showLogin(){
+ createBox.style.display="none";
+ loginBox.style.display="block";
+}
+
+function doLogin(){
+ loggedIn=true;
+ closeModal();
+ redirect();
+}
+
+function redirect(){
+ if(service==="bus") location.href="https://www.redbus.in";
+ if(service==="train") location.href="https://www.irctc.co.in";
+ if(service==="flight") location.href="https://www.makemytrip.com/flights";
+ if(service==="hotel") location.href="https://www.booking.com";
+}
+
+function scrollToTop(){
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+
+</body>
+</html>
